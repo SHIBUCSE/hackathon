@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Leg Stand Detection</title>
+    <style>
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav li {
+            margin-right: 20px;
+            position: relative;
+        }
+        #leaderboard {
+            background-color: #1dc020;
+            padding: 5px;
+            border: 1px solid #aa3333;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #1dc020;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #159e15;
+        }
+        #video-container {
+            margin-top: 20px;
+        }
+        #video {
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+        #content {
+            margin-top: 20px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #575757;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        #music-player {
+            display: none;
+            margin-top: 20px;
+        }
+        #music-player audio {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html" style="color: #fff; text-decoration: none;">Home</a></li>
+            <li><a href="calculator.html" style="color: #fff; text-decoration: none;">Calculator</a></li>
+            <li><a href="#" onclick="openMusicPlayer()" style="color: #fff; text-decoration: none;">Songs</a></li>
+            <li id="leaderboard">
+                <h2>Leaderboard</h2>
+                <ul>
+                    <li>1. John Doe - 100 push-ups</li>
+                    <li>2. Jane Doe - 90 push-ups</li>
+                    <li>3. Bob Smith - 80 push-ups</li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <button id="mission-btn">Mission</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="startMission()">One Leg Stand</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Music player container -->
+    <div id="music-player">
+        <h2>Music Player</h2>
+        <audio id="audio-player" controls autoplay>
+            <source src="/audio/[iSongs.info] 07 - Lokiverse 2.0.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <button onclick="closeMusicPlayer()">Close</button>
+    </div>
+
+    <!-- Video feed container -->
+    <div id="video-container" style="display: none;">
+        <h1>One Leg Stand Detection</h1>
+        <img id="video" src="" alt="Video feed">
+        <p id="detection-status"></p>
+    </div>
+
+    <script>
+        function openMusicPlayer() {
+            document.getElementById('music-player').style.display = 'block';
+        }
+
+        function closeMusicPlayer() {
+            document.getElementById('music-player').style.display = 'none';
+        }
+
+        function startMission() {
+            document.getElementById('video-container').style.display = 'block';
+            document.getElementById('video').src = '/video_feed';
+
+            fetch('/start-mission')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('detection-status').innerText = data.result;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
